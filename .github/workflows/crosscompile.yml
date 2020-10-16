@@ -1,0 +1,26 @@
+on: push
+
+name: Cross compile
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - 1.46.0
+          - 1.45.2
+          - 1.44.1
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          target: riscv32imac-unknown-none-elf
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
