@@ -21,6 +21,16 @@ jobs:
           toolchain: ${{ matrix.rust }}
           target: riscv32imac-unknown-none-elf
           override: true
+          components: llvm-tools-preview
+      - uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-binutils
       - uses: actions-rs/cargo@v1
         with:
           command: build
+          args: --release
+      - uses: actions-rs/cargo@v1
+        with:
+          command: size
+          args: --release
